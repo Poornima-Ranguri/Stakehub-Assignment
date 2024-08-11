@@ -1,107 +1,51 @@
-In this project, let's build **Technology Cards** by applying the concepts we have learned till now.
+In this project, Lets build An Interactive Application
 
-### Refer to the image below:
+# Stakehubs Assignment Reference Document
 
-<br/>
-<div style="text-align: center;">
-<img src="https://assets.ccbp.in/frontend/content/react-js/technology-cards-lg-output.png" alt="simple-cards-app-output" style="max-width:70%;box-shadow:0 2.8px 2.2px rgba(0, 0, 0, 0.12)">
-</div>
-<br/>
+### Database Design:
 
-### Design Files
+1. *SQLite Database Setup*:
+    - Create two main tables: PendingOrderTable and CompletedOrderTable.
+    - PendingOrderTable fields: id, buyer_qty, buyer_price, seller_price, seller_qty.
+    - CompletedOrderTable fields: id, price, qty.
+2. *Indexing*:
+    - Consider adding indexes on buyer_price and seller_price in the PendingOrderTable to speed up the price matching query process.
 
-<details>
-<summary>Click to view</summary>
+### Backend Setup (Node.js):
 
-- [Extra Small (Size < 576px), Small (Size >= 576px), and Medium (Size >= 768px)](https://assets.ccbp.in/frontend/content/react-js/technology-cards-sm-output.png)
-- [Large (Size >= 992px) and Extra Large (Size >= 1200px)](https://assets.ccbp.in/frontend/content/react-js/technology-cards-lg-output.png)
+1. *API Development*:
+    - *Create Order API*: Accepts buyer or seller orders and inserts them into the PendingOrderTable.
+    - *Match Orders API*: Checks for matches between buyer and seller prices; moves matched orders to CompletedOrderTable.
+    - *Get Orders API*: Fetches current orders from both tables.
+2. *Matching Logic*:
+    - When a new order is added, the system should trigger a check in the PendingOrderTable to find any matching seller/buyer orders.
+    - A match is found when buyer_price >= seller_price. Move the minimum quantity of the matched order to CompletedOrderTable and update quantities in PendingOrderTable as necessary.
+3. *Transaction Management*:
+    - Use SQLite transaction features to handle concurrent order placements and ensure data integrity.
 
-</details>
+### Frontend Setup (React.js):
 
-### Set Up Instructions
+1. *User Interface*:
+    - *Order Placement Form*: Allows users to input order details (buy/sell, quantity, price).
+    - *Order Tables Display*: Show current pending and completed orders.
+    - *Dynamic Price Chart*: Use a library like Chart.js or Recharts to display price points over time based on completed orders.
+2. *State Management*:
+    - Use React state hooks (e.g., useState, useEffect) to manage and update the UI based on the fetched data from the backend.
+    - Consider using context API or Redux for more complex state management if needed.
+3. *Real-time Data Handling*:
+    - Implement WebSocket or polling to update the order tables and price chart in real-time as new orders are matched and completed.
 
-<details>
-<summary>Click to view</summary>
+### Additional Features:
 
-- Download dependencies by running `npm install`
-- Start up the app using `npm start`
-</details>
+- *Form Validation*: Ensure that user inputs are valid (e.g., non-negative numbers, logical price/quantity entries).
+- *Responsive Design*: Make sure the UI is responsive and accessible on different devices.
+- *User Feedback*: Implement loader icons and messages to indicate processing states or errors to the user.
 
-### Completion Instructions
+### Testing:
 
-<details>
-<summary>Functionality to be added</summary>
-<br/>
+- Write tests for both frontend components and backend APIs using frameworks like Jest (for React) and Mocha/Chai (for Node.js).
+- Ensure you cover edge cases like simultaneous order placements, invalid inputs, and order matching logic.
 
-The app must have the following functionalities
+### Deployment:
 
-- The App is provided with `cardsList`. It consists of a list of cardItem objects with the following properties in each cardItem object
-
-  |     Key     | Data Type |
-  | :---------: | :-------: |
-  |     id      |  Number   |
-  |    title    |  String   |
-  | description |  String   |
-  |   imgUrl    |  String   |
-  |  className  |  String   |
-
-- The value of the key `id` should be used as a key to the `CardItem` component.
-- The value of the key `className` should be used for the HTML list item in the `CardItem` component.
-
-</details>
-
-<details>
-<summary>Implementation Files</summary>
-<br/>
-
-Use these files to complete the implementation:
-
-- `src/App.js`
-- `src/App.css`
-- `src/components/CardItem/index.js`
-- `src/components/CardItem/index.css`
-</details>
-
-### Important Note
-
-<details>
-<summary>Click to view</summary>
-
-<br/>
-
-**The following instructions are required for the tests to pass**
-
-- Each `CardItem` should have an HTML image element with `alt` attribute value as the value of the key **title** in `cardsList`
-</details>
-
-### Resources
-
-<details>
-<summary>Colors</summary>
-
-<br/>
-
-<div style="background-color: #f4faff; width: 150px; padding: 10px; color: black">Hex: #f4faff</div>
-<div style="background-color: #64748b; width: 150px; padding: 10px; color: white">Hex: #64748b</div>
-<div style="background-color: #ffffff; width: 150px; padding: 10px; color: black">Hex: #ffffff</div>
-<div style="background-color: #ff4f64; width: 150px; padding: 10px; color: white">Hex: #ff4f64</div>
-<div style="background-color: #00a8e7; width: 150px; padding: 10px; color: white">Hex: #00a8e7</div>
-<div style="background-color: #44c4a1; width: 150px; padding: 10px; color: white">Hex: #44c4a1</div>
-<div style="background-color: #fcc200; width: 150px; padding: 10px; color: white">Hex: #fcc200</div>
-<div style="background-color: #171f46; width: 150px; padding: 10px; color: white">Hex: #171f46</div>
-
-</details>
-
-<details>
-<summary>Font-families</summary>
-
-- Roboto
-
-</details>
-
-> ### _Things to Keep in Mind_
->
-> - All components you implement should go in the `src/components` directory.
-> - Don't change the component folder names as those are the files being imported into the tests.
-> - **Do not remove the pre-filled code**
-> - Want to quickly review some of the concepts you’ve been learning? Take a look at the Cheat Sheets.
+- Consider deploying the backend on platforms like Render or AWS and the frontend on Netlify or Vercel.
